@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace entityLayer.concrete
@@ -17,8 +19,13 @@ namespace entityLayer.concrete
         public string? description { get; set; }
         public DateTime startDate { get; set;}
         public DateTime? endDate { get; set;}
-        public string CreatedByUserId { get; set; }
+        public int CreatedByUserId { get; set; }
         [StringLength(15)]
         public string Status { get; set; }
+
+        [JsonIgnore]
+
+        [ForeignKey("CreatedByUserId")]
+        public AppUser? AppUser { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using dtoLayer.appUserDtos;
 using dtoLayer.projectDtos;
 using dtoLayer.taskStageDtos;
 using entityLayer.concrete;
@@ -14,6 +15,9 @@ namespace tracker.mapping
 
             CreateMap<addTaskStageDto, taskStage>().ReverseMap();
             CreateMap<updateTaskStageDto, taskStage>().ReverseMap();
+
+            CreateMap<addUserDto, AppUser>().ReverseMap();
+            CreateMap<updateUserDto, AppUser>().ReverseMap();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dataAccessLayer.concrete;
 
@@ -11,9 +12,11 @@ using dataAccessLayer.concrete;
 namespace dataAccessLayer.Migrations
 {
     [DbContext(typeof(context))]
-    partial class contextModelSnapshot : ModelSnapshot
+    [Migration("20241223133442_mig_mail_edit")]
+    partial class mig_mail_edit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,8 +247,9 @@ namespace dataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("projectID"));
 
-                    b.Property<int>("CreatedByUserId")
-                        .HasColumnType("int");
+                    b.Property<string>("CreatedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -268,8 +272,6 @@ namespace dataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("projectID");
-
-                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("projects");
                 });
@@ -362,17 +364,6 @@ namespace dataAccessLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("entityLayer.concrete.project", b =>
-                {
-                    b.HasOne("entityLayer.concrete.AppUser", "AppUser")
-                        .WithMany("projects")
-                        .HasForeignKey("CreatedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("entityLayer.concrete.taskStage", b =>
                 {
                     b.HasOne("entityLayer.concrete.project", "project")
@@ -382,11 +373,6 @@ namespace dataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("project");
-                });
-
-            modelBuilder.Entity("entityLayer.concrete.AppUser", b =>
-                {
-                    b.Navigation("projects");
                 });
 #pragma warning restore 612, 618
         }

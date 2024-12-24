@@ -14,6 +14,10 @@ builder.Services.AddScoped<IProjectService, projectManager>();
 builder.Services.AddScoped<ITaskStageDal, efTaskStageDal>();
 builder.Services.AddScoped<ITaskStageService, taskStageManager>();
 
+builder.Services.AddScoped<IUserDal, efUserDal>();
+builder.Services.AddScoped<IUserService, userManager>();
+
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 
