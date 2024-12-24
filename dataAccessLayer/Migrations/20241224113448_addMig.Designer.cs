@@ -12,8 +12,8 @@ using dataAccessLayer.concrete;
 namespace dataAccessLayer.Migrations
 {
     [DbContext(typeof(context))]
-    [Migration("20241224112134_mig_relation_appUser_with_project")]
-    partial class mig_relation_appUser_with_project
+    [Migration("20241224113448_addMig")]
+    partial class addMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

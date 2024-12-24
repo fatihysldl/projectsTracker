@@ -5,7 +5,7 @@
 namespace dataAccessLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class mig_relation_appUser_with_project : Migration
+    public partial class addMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
