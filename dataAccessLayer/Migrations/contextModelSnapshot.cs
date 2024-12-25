@@ -137,6 +137,10 @@ namespace dataAccessLayer.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -164,6 +168,9 @@ namespace dataAccessLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AppRoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -205,10 +212,6 @@ namespace dataAccessLayer.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -223,7 +226,15 @@ namespace dataAccessLayer.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("companyUserID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("roleID")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AppRoleId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -233,7 +244,41 @@ namespace dataAccessLayer.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("companyUserID");
+
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("entityLayer.concrete.companyUser", b =>
+                {
+                    b.Property<int>("companyUserID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("companyUserID"));
+
+                    b.Property<string>("companyUserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("companyUserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("companyUserPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("roleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasKey("companyUserID");
+
+                    b.HasIndex("roleID");
+
+                    b.ToTable("companyUsers");
                 });
 
             modelBuilder.Entity("entityLayer.concrete.project", b =>
@@ -251,6 +296,9 @@ namespace dataAccessLayer.Migrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("companyUserID")
+                        .HasColumnType("int");
 
                     b.Property<string>("description")
                         .HasMaxLength(500)
@@ -270,6 +318,8 @@ namespace dataAccessLayer.Migrations
                     b.HasKey("projectID");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("companyUserID");
 
                     b.ToTable("projects");
                 });
@@ -362,15 +412,51 @@ namespace dataAccessLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("entityLayer.concrete.AppUser", b =>
+                {
+                    b.HasOne("entityLayer.concrete.AppRole", "AppRole")
+                        .WithMany("appUsers")
+                        .HasForeignKey("AppRoleId");
+
+                    b.HasOne("entityLayer.concrete.companyUser", "companyUser")
+                        .WithMany("appUsers")
+                        .HasForeignKey("companyUserID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppRole");
+
+                    b.Navigation("companyUser");
+                });
+
+            modelBuilder.Entity("entityLayer.concrete.companyUser", b =>
+                {
+                    b.HasOne("entityLayer.concrete.AppRole", "AppRole")
+                        .WithMany("companyUsers")
+                        .HasForeignKey("roleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppRole");
+                });
+
             modelBuilder.Entity("entityLayer.concrete.project", b =>
                 {
                     b.HasOne("entityLayer.concrete.AppUser", "AppUser")
-                        .WithMany("projects")
+                        .WithMany("Projects")
                         .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("entityLayer.concrete.companyUser", "companyUser")
+                        .WithMany("projects")
+                        .HasForeignKey("companyUserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AppUser");
+
+                    b.Navigation("companyUser");
                 });
 
             modelBuilder.Entity("entityLayer.concrete.taskStage", b =>
@@ -384,8 +470,22 @@ namespace dataAccessLayer.Migrations
                     b.Navigation("project");
                 });
 
+            modelBuilder.Entity("entityLayer.concrete.AppRole", b =>
+                {
+                    b.Navigation("appUsers");
+
+                    b.Navigation("companyUsers");
+                });
+
             modelBuilder.Entity("entityLayer.concrete.AppUser", b =>
                 {
+                    b.Navigation("Projects");
+                });
+
+            modelBuilder.Entity("entityLayer.concrete.companyUser", b =>
+                {
+                    b.Navigation("appUsers");
+
                     b.Navigation("projects");
                 });
 #pragma warning restore 612, 618

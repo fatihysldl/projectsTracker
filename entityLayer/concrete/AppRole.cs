@@ -9,6 +9,8 @@ namespace entityLayer.concrete
 {
     public class AppRole : IdentityRole<int>
     {
-        public int Name { get; set; }
+        public string Description { get; set; }
+        public List<AppUser> appUsers { get; set; }
+        public List<companyUser> companyUsers { get; set; }
     }
 }

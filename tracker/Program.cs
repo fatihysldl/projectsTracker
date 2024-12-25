@@ -17,6 +17,9 @@ builder.Services.AddScoped<ITaskStageService, taskStageManager>();
 builder.Services.AddScoped<IUserDal, efUserDal>();
 builder.Services.AddScoped<IUserService, userManager>();
 
+builder.Services.AddScoped<ICompanyUserDal, efCompanyUserDal>();
+builder.Services.AddScoped<ICompanyUserService, companyUserManager>();
+
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();

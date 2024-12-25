@@ -22,10 +22,15 @@ namespace entityLayer.concrete
         public int CreatedByUserId { get; set; }
         [StringLength(15)]
         public string Status { get; set; }
+        [ForeignKey("companyUserID")]
+        public int companyUserID { get; set; }
+        [JsonIgnore]
+        public companyUser? companyUser { get; set; }
 
         [JsonIgnore]
 
         [ForeignKey("CreatedByUserId")]
-        public AppUser? AppUser { get; set; }
+        public AppUser? AppUser { get; set; }        
+
     }
 }
