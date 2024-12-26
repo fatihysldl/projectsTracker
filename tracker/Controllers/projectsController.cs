@@ -25,6 +25,13 @@ namespace tracker.Controllers
             var values = _projectService.getAll();
             return Ok(values);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetProjectsByCompany(int companyUserID)
+        {
+            var projects = _projectService.getProjectsByCompany(companyUserID);
+            return Ok(projects);
+        }
         [HttpPost]
         public IActionResult postProject(project p)
         {

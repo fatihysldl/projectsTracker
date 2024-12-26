@@ -15,6 +15,7 @@ namespace businessLayer.abstracts
         void delete(project p);
         List<project> getAll();
         project getById(int id);
-        List<project> List(Expression<Func<project, bool>> filter);
+        List<project> getProjectsByCompany(int companyUserID);
+
     }
 }

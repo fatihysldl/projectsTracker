@@ -34,6 +34,11 @@ namespace businessLayer.concrete
             return _project.getById(id);
         }
 
+        public List<project> getProjectsByCompany(int companyUserID)
+        {
+            return _project.List(p => p.companyUserID == companyUserID);
+        }
+
         public void insert(project p)
         {
             _project.insert(p);

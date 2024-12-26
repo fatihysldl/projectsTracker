@@ -15,5 +15,6 @@ namespace dataAccessLayer.abstracts
         List<T> getAll();
         T getById(int id);
         List<T> List(Expression<Func<T, bool>> filter);
+        List<T> getCompanyProjects(Expression<Func<T, bool>>? filter = null);
     }
 }

@@ -18,7 +18,7 @@ namespace dataAccessLayer.concrete
         public DbSet<project> projects { get; set; }
         public DbSet<taskStage> taskStages { get; set; }
         public DbSet<companyUser> companyUsers { get; set; }
-        public DbSet<appUserProject> appUserProjects { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // companyUser ve AppUser arasında 1-N ilişkisi
@@ -37,19 +37,7 @@ namespace dataAccessLayer.concrete
             base.OnModelCreating(modelBuilder);
 
 
-            // Çoka çok ilişki için bağlantı tablosu yapılandırması
-            modelBuilder.Entity<AppUserProject>()
-                .HasKey(ap => new { ap.AppUserId, ap.ProjectId });
-
-            modelBuilder.Entity<AppUserProject>()
-                .HasOne(ap => ap.AppUser)
-                .WithMany(au => au.AppUserProjects)
-                .HasForeignKey(ap => ap.AppUserId);
-
-            modelBuilder.Entity<AppUserProject>()
-                .HasOne(ap => ap.Project)
-                .WithMany(p => p.AppUserProjects)
-                .HasForeignKey(ap => ap.ProjectId);
+            
         }
     }
 }

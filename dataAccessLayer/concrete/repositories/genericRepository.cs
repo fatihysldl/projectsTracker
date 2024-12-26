@@ -33,6 +33,15 @@ namespace dataAccessLayer.concrete.repositories
             return _context.Set<T>().Find(id);
         }
 
+        public List<T> getCompanyProjects(Expression<Func<T, bool>>? filter = null)
+        {
+            if (filter != null)
+            {
+                return _context.Set<T>().Where(filter).ToList();
+            }
+            return _context.Set<T>().ToList();
+        }
+
         public void insert(T p)
         {
             _context.Add(p);
