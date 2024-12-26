@@ -26,7 +26,7 @@ namespace tracker.Controllers
             return Ok(values);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("company/{companyUserID}")]
         public IActionResult GetProjectsByCompany(int companyUserID)
         {
             var projects = _projectService.getProjectsByCompany(companyUserID);
